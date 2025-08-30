@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <!-- normalize css -->
+    <link rel="stylesheet" href="./normalize.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="./main.css" />
+    <title>Task Manager - Login/Register</title>
+  </head>
+  <body>
+    <div class="auth-container">
+      <!-- Login Form -->
+      <form class="auth-form login-form">
+        <h4>Login</h4>
+        <div class="form-control">
+          <label for="login-email">Email</label><span>&nbsp;&nbsp;&nbsp;</span>
+          <input
+            type="email"
+            id="login-email"
+            name="email"
+            class="auth-input"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label for="login-password">Password</label><span>&nbsp;&nbsp;&nbsp;</span>
+          <input
+            type="password"
+            id="login-password"
+            name="password"
+            class="auth-input"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn submit-btn">Login</button>
+        <div class="form-alert login-alert"></div>
+        <p class="auth-switch">
+          Don't have an account?
+          <span
+            class="switch-to-register"
+            style="
+              color: var(--primary-500);
+              cursor: pointer;
+              text-decoration: underline;
+            "
+          >
+            Register here
+          </span>
+        </p>
+      </form>
+
+      <!-- Register Form -->
+      <form class="auth-form register-form" style="display: none">
+        <h4>Register</h4>
+        <div class="form-control">
+          <label for="register-name">Name</label><span>&nbsp;&nbsp;&nbsp;</span>
+          <input
+            type="text"
+            id="register-name"
+            name="name"
+            class="auth-input"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label for="register-email">Email</label><span>&nbsp;&nbsp;&nbsp;</span>
+          <input
+            type="email"
+            id="register-email"
+            name="email"
+            class="auth-input"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label for="register-password">Password</label><span>&nbsp;&nbsp;&nbsp;</span>
+          <input
+            type="password"
+            id="register-password"
+            name="password"
+            class="auth-input"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn submit-btn">Register</button>
+        <div class="form-alert register-alert"></div>
+        <p class="auth-switch">
+          Already have an account?
+          <span
+            class="switch-to-login"
+            style="
+              color: var(--primary-500);
+              cursor: pointer;
+              text-decoration: underline;
+            "
+          >
+            Login here
+          </span>
+        </p>
+      </form>
+    </div>
+
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./auth.js"></script>
+  </body>
+</html>

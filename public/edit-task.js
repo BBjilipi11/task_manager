@@ -1,73 +1,95 @@
-const taskIDDOM = document.querySelector('.task-edit-id')
-const taskNameDOM = document.querySelector('.task-edit-name')
-const taskCompletedDOM = document.querySelector('.task-edit-completed')
-const editFormDOM = document.querySelector('.single-task-form')
-const editBtnDOM = document.querySelector('.task-edit-btn')
-const formAlertDOM = document.querySelector('.form-alert')
-const params = window.location.search
-const id = new URLSearchParams(params).get('id')
-let tempName
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+if (!token) {
+  window.location.href = "auth.html";
+}
+
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+document.getElementById("user-name").textContent = user.name || "User";
+
+document.querySelector(".logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "auth.html";
+});
+
+const taskIDDOM = document.querySelector(".task-edit-id");
+const taskNameDOM = document.querySelector(".task-edit-name");
+const taskCompletedDOM = document.querySelector(".task-edit-completed");
+const editFormDOM = document.querySelector(".single-task-form");
+const editBtnDOM = document.querySelector(".task-edit-btn");
+const formAlertDOM = document.querySelector(".form-alert");
+const params = window.location.search;
+const id = new URLSearchParams(params).get("id");
+let tempName;
 
 const showTask = async () => {
   try {
     const {
       data: { task },
-    } = await axios.get(`/api/v1/tasks/${id}`)
-    const { _id: taskID, completed, name } = task
+    } = await axios.get(`/api/v1/tasks/${id}`);
+    const { _id: taskID, completed, name } = task;
 
-    taskIDDOM.textContent = taskID
-    taskNameDOM.value = name
-    tempName = name
+    taskIDDOM.textContent = taskID;
+    taskNameDOM.value = name;
+    tempName = name;
     if (completed) {
-      taskCompletedDOM.checked = true
+      taskCompletedDOM.checked = true;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "auth.html";
+    }
   }
-}
+};
 
-showTask()
+showTask();
 
-editFormDOM.addEventListener('submit', async (e) => {
-  editBtnDOM.textContent = 'Loading...'
-  e.preventDefault()
+editFormDOM.addEventListener("submit", async (e) => {
+  editBtnDOM.textContent = "Loading...";
+  e.preventDefault();
   try {
-    const taskName = taskNameDOM.value
-    const taskCompleted = taskCompletedDOM.checked
+    const taskName = taskNameDOM.value;
+    const taskCompleted = taskCompletedDOM.checked;
 
-    const {
-      data
-    } = await axios.patch(`/api/v1/tasks/${id}`, {
+    const { data } = await axios.patch(`/api/v1/tasks/${id}`, {
       name: taskName,
       completed: taskCompleted,
-    })
+    });
 
-    // console.log(data);
-    // const { id: taskID, data } = data1
-    // const { name, completed} = data
-    const taskID = data.id
-    const name = data.data.name
-    const completed = data.data.completed
+    const taskID = data.id;
+    const name = data.data.name;
+    const completed = data.data.completed;
 
-    taskIDDOM.textContent = taskID
-    taskNameDOM.value = name
-    tempName = name
+    taskIDDOM.textContent = taskID;
+    taskNameDOM.value = name;
+    tempName = name;
     if (completed) {
-      taskCompletedDOM.checked = true
+      taskCompletedDOM.checked = true;
     }
-    formAlertDOM.style.display = 'block'
-    formAlertDOM.textContent = `success, edited task`
-    formAlertDOM.classList.add('text-success')
+    formAlertDOM.style.display = "block";
+    formAlertDOM.textContent = `success, edited task`;
+    formAlertDOM.classList.add("text-success");
   } catch (error) {
-    console.error(error)
-    taskNameDOM.value = tempName
-    formAlertDOM.style.display = 'block'
-    formAlertDOM.innerHTML = `error, please try again`
+    console.error(error);
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "auth.html";
+      return;
+    }
+    taskNameDOM.value = tempName;
+    formAlertDOM.style.display = "block";
+    formAlertDOM.innerHTML = `error, please try again`;
   }
-  editBtnDOM.textContent = 'Edit'
+  editBtnDOM.textContent = "Edit";
   setTimeout(() => {
-    formAlertDOM.style.display = 'none'
-    formAlertDOM.classList.remove('text-success')
-  }, 3000)
-})
-
+    formAlertDOM.style.display = "none";
+    formAlertDOM.classList.remove("text-success");
+  }, 3000);
+});
